@@ -33,10 +33,9 @@ df_ges["types"]=df_ges.iso_code.apply(lambda x:"country" if x is not np.nan else
 
 ##### LISTE DES PAYS ##### 
 
-country_name=df_ges.country.unique().tolist()
+country_name=pd.read_csv("csv/countries.csv",sep=";")
+country_name=country_name.countries.tolist()
 country_name.append("World")
-liste_region_by_rich = df_ges[df_ges.types=='region_by_rich'].country.unique()
-other=df_ges[(df_ges.types=='other') & (~df_ges.country.str.contains('Panama Canal Zone'))].country.unique()
 
 colors = px.colors.sequential.YlGnBu_r 
 
@@ -328,7 +327,7 @@ app.layout = html.Div(
         html.Div(children=[
         html.Div(
               children=[
-                    html.H3(children="Pays",className="text-5xl p-3 m-2 text-center"),
+                    html.H3(children="Pays",className="text-3xl p-3 m-2 text-center"),
                     dcc.Dropdown(
 
                             id="country",
@@ -341,7 +340,7 @@ app.layout = html.Div(
         ),
         html.Div(
               children=[
-                    html.H3(children="Année",className="text-5xl p-3 m-2 text-center"),
+                    html.H3(children="Année",className="text-3xl p-3 m-2 text-center"),
                     dcc.Dropdown(
 
                             id="year",
@@ -354,7 +353,7 @@ app.layout = html.Div(
         ),
         html.Div(
               children=[
-                    html.H3(children="Type visualisation",className="text-5xl p-3 m-2 text-center"),
+                    html.H3(children="Type visualisation",className="text-3xl p-3 m-2 text-center"),
                     dcc.Dropdown(
 
                             id="visualisation",
@@ -378,8 +377,28 @@ app.layout = html.Div(
 
         html.Div(
             children=[
-                dcc.RadioItems(id="value_see",options=["valeur en pourcentage","valeur en TWh"],value="valeur en pourcentage",inline=True,className="p-3 m-2 rounded-2xl bg-white"),
-                dcc.RadioItems(id="energie_see",options=["Par famille","Par type"],value="Par type",inline=True,className="p-3 m-2 rounded-2xl bg-white"),
+                html.Div(
+                    children=[
+                   
+                                
+                                html.Div(
+                                    children=[
+                                    html.H3(children="Affichage de la valeur",className="text-3xl p-3 m-2 text-center"),
+                                    dcc.Dropdown(id="value_see",
+                                    options=["valeur en pourcentage","valeur en TWh"],value="valeur en pourcentage",
+                                    className="flex flex-col  p-3 m-2 items-center w-full")
+                                    ],className="w-full xl:w-1/2 bg-white p-3 m-2 rounded-2xl shadow-lg"
+                                ),          
+                                html.Div(
+                                    children=[
+                                    html.H3(children="Regroupement par ",className="text-3xl p-3 m-2 text-center"),
+                                    dcc.Dropdown(id="energie_see",
+                                    options=["Par famille","Par type"],value="Par type",
+                                    className="flex flex-col  p-3 m-2 items-center w-full")
+                                    ],className="w-full xl:w-1/2 bg-white p-3 m-2 rounded-2xl shadow-lg"
+                                ),
+            
+                    ],className="flex flex-col xl:flex-row p-3 m-2 xl:flex-nowrap w-full"),
 
                 html.Div(
                     children=[
